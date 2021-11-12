@@ -26,15 +26,15 @@ func mustGetEnv(key string) string {
 	return value
 }
 
-func loadEnv() {
-	err := godotenv.Load()
+func loadDevEnv() {
+	err := godotenv.Load("dev.env")
 	if err == nil {
-		log.Default().Print("Loading .env file...")
+		log.Default().Print("Loading dev.env file...")
 	}
 }
 
 func init() {
-	loadEnv()
+	loadDevEnv()
 
 	var cfg Config
 	cfg.DiscordChannelId = mustGetEnv("DISCORD_CHANNEL_ID")
