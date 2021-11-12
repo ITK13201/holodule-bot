@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	log "github.com/sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
-	log "github.com/sirupsen/logrus"
 	"time"
 
 	"github.com/ITK13201/holodule-bot/config"
@@ -60,7 +60,7 @@ type OnlyTextContent struct {
 func Notify(videos []video.VideoWithDatetime) {
 	cfg := *config.Cfg
 	url := fmt.Sprintf("https://discordapp.com/api/channels/%s/messages", cfg.DiscordChannelId)
-
+	webhook_url := cfg.DiscordWebhookUrl
 
 	//=================
 	// single text
@@ -71,7 +71,7 @@ func Notify(videos []video.VideoWithDatetime) {
 	}
 	contentJson, _ := json.Marshal(content)
 
-	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(contentJson))
+	req, _ := http.NewRequest("POST", webhook_url, bytes.NewBuffer(contentJson))
 	req.Header.Set("Authorization", fmt.Sprintf("Bot %s", cfg.DiscordBotToken))
 	req.Header.Set("Content-Type", "application/json")
 

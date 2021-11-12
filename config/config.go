@@ -12,6 +12,7 @@ import (
 type Config struct {
 	DiscordChannelId string `json:"discord-channel-id"`
 	DiscordBotToken  string `json:"discord-bot-token"`
+	DiscordWebhookUrl string `json:"discord-webhook-url"`
 }
 
 var Cfg *Config
@@ -38,6 +39,7 @@ func init() {
 	var cfg Config
 	cfg.DiscordChannelId = mustGetEnv("DISCORD_CHANNEL_ID")
 	cfg.DiscordBotToken = mustGetEnv("DISCORD_BOT_TOKEN")
+	cfg.DiscordWebhookUrl = mustGetEnv("DISCORD_WEBHOOK_URL")
 	Cfg = &cfg
 
 	jst, err := time.LoadLocation("Asia/Tokyo")
