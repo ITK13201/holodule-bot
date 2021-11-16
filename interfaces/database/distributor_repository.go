@@ -33,8 +33,22 @@ func (repo *DistributorRepository) FindById(id int) (*domain.Distributor, error)
 	var d domain.Distributor
 	err := repo.Get(
 		&d,
-		"SELECT * FROM distributors WHERE id=?",
+		"SELECT * FROM distributors WHERE id = ?",
 		id,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &d, nil
+}
+
+func (repo *DistributorRepository) FindByName(name string) (*domain.Distributor, error) {
+	var d domain.Distributor
+	err := repo.Get(
+		&d,
+		"SELECT * FROM distributors WHERE name = ?",
+		name,
 	)
 	if err != nil {
 		return nil, err

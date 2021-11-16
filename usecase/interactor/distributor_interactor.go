@@ -31,6 +31,11 @@ func (interactor *DistributorInteractor) GetById(id int) (*domain.Distributor, e
 	return d, err
 }
 
+func (interactor *DistributorInteractor) GetByName(name string) (*domain.Distributor, error) {
+	d, err := interactor.repository.FindByName(name)
+	return d, err
+}
+
 func (interactor *DistributorInteractor) GetAll() ([]domain.Distributor, error) {
 	distributors, err := interactor.repository.FindAll()
 	return distributors, err
