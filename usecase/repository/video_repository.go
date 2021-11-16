@@ -6,6 +6,7 @@ import (
 
 type VideoRepository interface {
 	Store(distributor domain.Video) (int, error)
+	UpdateNotifiedAt(id int) error
 	FindById(id int) (*domain.Video, error)
 	FindAll() ([]domain.Video, error)
 	FindComingSoon() ([]domain.Video, error)

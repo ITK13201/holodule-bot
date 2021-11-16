@@ -38,6 +38,16 @@ func (repo *VideoRepository) Store(v domain.Video) (int, error) {
 	return id, err
 }
 
+func (repo *VideoRepository) UpdateNotifiedAt(id int) error {
+	_, err := repo.Exec(`
+		UPDATE videos SET notified_at = NOW() 
+		WHERE id = ?
+		`,
+		id,
+	)
+	return err
+}
+
 func (repo *VideoRepository) FindById(id int) (*domain.Video, error) {
 	var v domain.Video
 	err := repo.Get(
@@ -115,7 +125,7 @@ func (repo *VideoRepository) FindComingSoon() ([]domain.Video, error) {
 		FROM videos AS v
 		INNER JOIN distributors AS d ON v.distributor_id = d.id
 		WHERE notified_at IS NULL
-			AND (NOW() - INTERVAL 2 HOUR) < datetime AND datetime < (NOW() - INTERVAL 1 HOUR)
+			AND (datetime - INTERVAL 2 HOUR) < NOW() AND NOW() < (datetime - INTERVAL 1 HOUR)
 	`,
 	)
 	if err != nil {
