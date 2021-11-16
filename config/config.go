@@ -10,13 +10,15 @@ import (
 )
 
 type Config struct {
-	DiscordChannelId string `json:"discord-channel-id"`
-	DiscordBotToken  string `json:"discord-bot-token"`
+	DiscordChannelId  string `json:"discord-channel-id"`
+	DiscordBotToken   string `json:"discord-bot-token"`
 	DiscordWebhookUrl string `json:"discord-webhook-url"`
+	DatabaseUrl       string `json:"database-url"`
 }
 
 var Cfg *Config
 var JST *time.Location
+
 
 func mustGetEnv(key string) string {
 	value := os.Getenv(key)
@@ -40,6 +42,7 @@ func init() {
 	cfg.DiscordChannelId = mustGetEnv("DISCORD_CHANNEL_ID")
 	cfg.DiscordBotToken = mustGetEnv("DISCORD_BOT_TOKEN")
 	cfg.DiscordWebhookUrl = mustGetEnv("DISCORD_WEBHOOK_URL")
+	cfg.DatabaseUrl = mustGetEnv("DATABASE_URL")
 	Cfg = &cfg
 
 	jst, err := time.LoadLocation("Asia/Tokyo")

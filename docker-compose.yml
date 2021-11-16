@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+    mysql:
+        image: mysql:5.7
+        command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --general_log --general_log_file=/var/log/mysql/mysqld.log
+        ports:
+            - 3306:3306
+        environment: 
+            MYSQL_ROOT_PASSWORD: "password"
+            MYSQL_DATABASE: "holodule_bot"
+            MYSQL_USER: "user"
+            MYSQL_PASSWORD: "password"
+            TZ: "Asia/Tokyo"
+        volumes:
+            - mysql:/var/lib/mysql
+            - ./log/mysql:/var/log/mysql
+volumes:
+    mysql:
