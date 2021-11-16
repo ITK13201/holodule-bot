@@ -47,6 +47,7 @@ func (repo *VideoRepository) FindById(id int) (*domain.Video, error) {
 			url,
 			datetime,
 			image_url,
+			notified_at,
 			v.created_at AS created_at,
 			v.updated_at AS updated_at,
 			d.id AS 'distributor.id',
@@ -76,6 +77,7 @@ func (repo *VideoRepository) FindAll() ([]domain.Video, error) {
 			url,
 			datetime,
 			image_url,
+			notified_at,
 			v.created_at AS created_at,
 			v.updated_at AS updated_at,
 			d.id AS 'distributor.id',
@@ -85,6 +87,35 @@ func (repo *VideoRepository) FindAll() ([]domain.Video, error) {
 			d.updated_at AS 'distributor.updated_at'
 		FROM videos AS v
 		INNER JOIN distributors AS d ON v.distributor_id = d.id
+	`,
+	)
+	if err != nil {
+		return nil, err
+	}
+	return videos, nil
+}
+
+func (repo *VideoRepository) FindComingSoon() ([]domain.Video, error) {
+	var videos []domain.Video
+	err := repo.Select(
+		&videos,
+		`SELECT
+			v.id AS id,
+			url,
+			datetime,
+			image_url,
+			notified_at,
+			v.created_at AS created_at,
+			v.updated_at AS updated_at,
+			d.id AS 'distributor.id',
+			name AS 'distributor.name',
+			icon_url AS 'distributor.icon_url',
+			d.created_at AS 'distributor.created_at',
+			d.updated_at AS 'distributor.updated_at'
+		FROM videos AS v
+		INNER JOIN distributors AS d ON v.distributor_id = d.id
+		WHERE notified_at IS NULL
+			AND (NOW() - INTERVAL 2 HOUR) < datetime AND datetime < (NOW() - INTERVAL 1 HOUR)
 	`,
 	)
 	if err != nil {

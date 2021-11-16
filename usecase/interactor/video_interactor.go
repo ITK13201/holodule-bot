@@ -35,3 +35,8 @@ func (interactor *VideoInteractor) GetAll() ([]domain.Video, error) {
 	videos, err := interactor.repository.FindAll()
 	return videos, err
 }
+
+func (interactor *VideoInteractor) GetComingSoon() ([]domain.Video, error) {
+	videos, err := interactor.repository.FindComingSoon()
+	return videos, err
+}
