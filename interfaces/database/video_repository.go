@@ -1,6 +1,7 @@
 package database
 
 import (
+	"database/sql"
 	"github.com/ITK13201/holodule-bot/domain"
 )
 
@@ -70,6 +71,38 @@ func (repo *VideoRepository) FindById(id int) (*domain.Video, error) {
 		WHERE v.id = ?
 		`,
 		id,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &v, nil
+}
+
+func (repo *VideoRepository) FindBy3(distributorId int, url string, datetime sql.NullTime) (*domain.Video, error) {
+	var v domain.Video
+	err := repo.Get(
+		&v,
+		`SELECT
+			v.id AS id,
+			url,
+			datetime,
+			image_url,
+			notified_at,
+			v.created_at AS created_at,
+			v.updated_at AS updated_at,
+			d.id AS 'distributor.id',
+			name AS 'distributor.name',
+			icon_url AS 'distributor.icon_url',
+			d.created_at AS 'distributor.created_at',
+			d.updated_at AS 'distributor.updated_at'
+		FROM videos AS v
+		INNER JOIN distributors AS d ON v.distributor_id = d.id
+		WHERE d.id = ? AND url = ? AND datetime = ?
+		`,
+		distributorId,
+		url,
+		datetime,
 	)
 	if err != nil {
 		return nil, err

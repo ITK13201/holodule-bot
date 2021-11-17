@@ -1,6 +1,7 @@
 package interactor
 
 import (
+	"database/sql"
 	"github.com/ITK13201/holodule-bot/domain"
 	"github.com/ITK13201/holodule-bot/interfaces/database"
 )
@@ -37,6 +38,11 @@ func (interactor *VideoInteractor) UpdateNotifiedAt(id int) (*domain.Video, erro
 
 func (interactor *VideoInteractor) GetById(id int) (*domain.Video, error) {
 	video, err := interactor.repository.FindById(id)
+	return video, err
+}
+
+func (interactor *VideoInteractor) GetBy3(distributorId int, url string, datetime sql.NullTime) (*domain.Video, error) {
+	video, err := interactor.repository.FindBy3(distributorId, url, datetime)
 	return video, err
 }
 
