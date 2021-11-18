@@ -29,6 +29,15 @@ func (repo *DistributorRepository) Store(d domain.Distributor) (int, error) {
 	return id, err
 }
 
+func (repo *DistributorRepository) Update(d domain.Distributor) error {
+	_, err := repo.NamedExec(`
+		UPDATE distributors
+		SET name = :name, icon_url = :icon_url
+		WHERE id = :id
+	`, d)
+	return err
+}
+
 func (repo *DistributorRepository) FindById(id int) (*domain.Distributor, error) {
 	var d domain.Distributor
 	err := repo.Get(

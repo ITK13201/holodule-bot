@@ -26,6 +26,11 @@ func (interactor *DistributorInteractor) Add(d domain.Distributor) (*domain.Dist
 	return distributor, err
 }
 
+func (interactor *DistributorInteractor) Update(d domain.Distributor) error {
+	err := interactor.repository.Update(d)
+	return err
+}
+
 func (interactor *DistributorInteractor) GetById(id int) (*domain.Distributor, error) {
 	d, err := interactor.repository.FindById(id)
 	return d, err

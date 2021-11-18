@@ -27,13 +27,9 @@ func (interactor *VideoInteractor) Add(v domain.Video) (*domain.Video, error) {
 	return video, err
 }
 
-func (interactor *VideoInteractor) UpdateNotifiedAt(id int) (*domain.Video, error) {
+func (interactor *VideoInteractor) UpdateNotifiedAt(id int) error {
 	err := interactor.repository.UpdateNotifiedAt(id)
-	if err != nil {
-		return nil, err
-	}
-	video, err := interactor.repository.FindById(id)
-	return video, err
+	return err
 }
 
 func (interactor *VideoInteractor) GetById(id int) (*domain.Video, error) {
