@@ -11,17 +11,29 @@ go mod download
 ## Build
 
 ```shell
-make
+make build
 ```
 
 ## Debug
 
 ```shell
-go run main.go
+make debug-daily
+# or
+make debug-coming-soon
 ```
 
 ## Run
 
 ```shell
-./bin/holodule-bot
+./bin/notify-daily
+# or
+./bin/notify-coming-soon
+```
+
+## Migration
+
+```shell
+./scripts/goose.sh up
+# or
+./scripts/goose.sh down
 ```
