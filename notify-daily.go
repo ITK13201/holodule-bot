@@ -26,26 +26,26 @@ func main() {
 	//====================
 	// notify videos
 	//====================
-	allEmbedContents := []discord.EmbedContent{}
+	allEmbeds := []discord.Embed{}
 	for i := 0; i < len(videos); i++ {
-		allEmbedContents = append(allEmbedContents, discord.GetEmbedContent(videos[i]))
+		allEmbeds = append(allEmbeds, discord.GetEmbed(videos[i]))
 	}
 
-	limit := len(allEmbedContents)/10 + 1
+	limit := len(allEmbeds)/10 + 1
 	for i := 0; i < limit; i++ {
 		x := i * 10
-		var embedContents []discord.EmbedContent
+		var embeds []discord.Embed
 		if i == limit-1 {
-			embedContents = allEmbedContents[x:]
-			if len(embedContents) == 0 {
+			embeds = allEmbeds[x:]
+			if len(embeds) == 0 {
 				continue
 			}
 		} else {
-			embedContents = allEmbedContents[x : x+10]
+			embeds = allEmbeds[x : x+10]
 		}
 
-		content := discord.Content{
-			Embeds: embedContents,
+		content := discord.EmbedsContent{
+			Embeds: embeds,
 		}
 		contentJson, _ := json.Marshal(content)
 

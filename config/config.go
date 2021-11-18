@@ -18,7 +18,7 @@ type Config struct {
 
 var Cfg *Config
 var JST *time.Location
-
+var UTC *time.Location
 
 func mustGetEnv(key string) string {
 	value := os.Getenv(key)
@@ -50,4 +50,10 @@ func init() {
 		panic(err)
 	}
 	JST = jst
+
+	utc, err := time.LoadLocation("UTC")
+	if err != nil {
+		panic(err)
+	}
+	UTC = utc
 }

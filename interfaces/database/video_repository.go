@@ -1,8 +1,8 @@
 package database
 
 import (
-	"database/sql"
 	"github.com/ITK13201/holodule-bot/domain"
+	"time"
 )
 
 type VideoRepository struct {
@@ -79,7 +79,7 @@ func (repo *VideoRepository) FindById(id int) (*domain.Video, error) {
 	return &v, nil
 }
 
-func (repo *VideoRepository) FindBy3(distributorId int, url string, datetime sql.NullTime) (*domain.Video, error) {
+func (repo *VideoRepository) FindBy3(distributorId int, url string, datetime time.Time) (*domain.Video, error) {
 	var v domain.Video
 	err := repo.Get(
 		&v,

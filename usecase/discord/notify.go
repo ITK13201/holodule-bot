@@ -22,17 +22,17 @@ type Image struct {
 	Url string `json:"url"`
 }
 
-type EmbedContent struct {
+type Embed struct {
 	Author      Author `json:"author"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	Image       Image  `json:"image"`
 }
 
-func GetEmbedContent(video video.VideoWithDatetime) EmbedContent {
+func GetEmbed(video video.VideoWithDatetime) Embed {
 	datetime := video.Datetime.Format(time.ANSIC)
 
-	content := EmbedContent{
+	content := Embed{
 		Author: Author{
 			Name:    video.Distributor.Name,
 			Url:     "",
@@ -48,8 +48,8 @@ func GetEmbedContent(video video.VideoWithDatetime) EmbedContent {
 	return content
 }
 
-type Content struct {
-	Embeds []EmbedContent `json:"embeds"`
+type EmbedsContent struct {
+	Embeds []Embed `json:"embeds"`
 }
 
 type OnlyTextContent struct {

@@ -11,9 +11,10 @@ services:
             MYSQL_DATABASE: "holodule_bot"
             MYSQL_USER: "user"
             MYSQL_PASSWORD: "password"
-            TZ: "Asia/Tokyo"
+            TZ: "UTC"
         volumes:
             - mysql:/var/lib/mysql
             - ./log/mysql:/var/log/mysql
 volumes:
     mysql:
+        driver: local
