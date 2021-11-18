@@ -2,7 +2,6 @@ package discord
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	"io/ioutil"
@@ -30,12 +29,12 @@ type EmbedContent struct {
 	Image       Image  `json:"image"`
 }
 
-func getEmbedContent(video video.VideoWithDatetime) EmbedContent {
+func GetEmbedContent(video video.VideoWithDatetime) EmbedContent {
 	datetime := video.Datetime.Format(time.ANSIC)
 
 	content := EmbedContent{
 		Author: Author{
-			Name:   video.Distributor.Name,
+			Name:    video.Distributor.Name,
 			Url:     "",
 			IconUrl: video.Distributor.IconUrl,
 		},
@@ -57,21 +56,32 @@ type OnlyTextContent struct {
 	Content string `json:"content"`
 }
 
-func Notify(videos []video.VideoWithDatetime) {
+func NotifyWithWebhook(contentJson []byte) {
+	cfg := *config.Cfg
+	url := cfg.DiscordWebhookUrl
+
+	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(contentJson))
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Error("[!] " + err.Error())
+	} else {
+		log.Info("[*] " + resp.Status)
+	}
+
+	log.Info(bytes.NewBuffer(contentJson).String())
+
+	respTxt, _ := ioutil.ReadAll(resp.Body)
+	log.Info(string(respTxt))
+}
+
+func NotifyWIthBot(contentJson []byte) {
 	cfg := *config.Cfg
 	url := fmt.Sprintf("https://discordapp.com/api/channels/%s/messages", cfg.DiscordChannelId)
-	webhook_url := cfg.DiscordWebhookUrl
 
-	//=================
-	// single text
-	//=================
-	now := time.Now().In(config.JST)
-	content := OnlyTextContent{
-		Content: fmt.Sprintf("**[INFO] %s**: Holodule updated", now.Format(time.ANSIC)),
-	}
-	contentJson, _ := json.Marshal(content)
-
-	req, _ := http.NewRequest("POST", webhook_url, bytes.NewBuffer(contentJson))
+	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(contentJson))
 	req.Header.Set("Authorization", fmt.Sprintf("Bot %s", cfg.DiscordBotToken))
 	req.Header.Set("Content-Type", "application/json")
 
@@ -88,47 +98,4 @@ func Notify(videos []video.VideoWithDatetime) {
 
 	respTxt, _ := ioutil.ReadAll(resp.Body)
 	log.Info(string(respTxt))
-
-	//====================
-	// notify videos
-	//====================
-	allEmbedContents := []EmbedContent{}
-	for i := 0; i < len(videos); i++ {
-		allEmbedContents = append(allEmbedContents, getEmbedContent(videos[i]))
-	}
-
-	limit := len(allEmbedContents) / 10 + 1
-	for i := 0; i < limit; i++ {
-		var x = i*10
-		var embedContents []EmbedContent
-		if i == limit - 1 {
-			embedContents = allEmbedContents[x:]
-		} else {
-			embedContents = allEmbedContents[x:x+10]
-		}
-
-
-		content := Content{
-			Embeds: embedContents,
-		}
-		contentJson, _ := json.Marshal(content)
-
-		req, _ := http.NewRequest("POST", url, bytes.NewBuffer(contentJson))
-		req.Header.Set("Authorization", fmt.Sprintf("Bot %s", cfg.DiscordBotToken))
-		req.Header.Set("Content-Type", "application/json")
-
-		client := &http.Client{}
-		resp, err := client.Do(req)
-
-		if err != nil {
-			log.Error("[!] " + err.Error())
-		} else {
-			log.Info("[*] " + resp.Status)
-		}
-
-		log.Info(bytes.NewBuffer(contentJson).String())
-
-		respTxt, _ := ioutil.ReadAll(resp.Body)
-		log.Info(string(respTxt))
-	}
 }
