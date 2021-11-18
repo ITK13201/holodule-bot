@@ -9,10 +9,6 @@ import (
 	"time"
 )
 
-var (
-	cfg = *config.Cfg
-)
-
 func main() {
 	videos := video.GetVideosOfToday()
 

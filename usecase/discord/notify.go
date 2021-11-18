@@ -48,6 +48,10 @@ func GetEmbed(video video.VideoWithDatetime) Embed {
 	return content
 }
 
+type EmbedContent struct {
+	Embed Embed `json:"embed"`
+}
+
 type EmbedsContent struct {
 	Embeds []Embed `json:"embeds"`
 }
