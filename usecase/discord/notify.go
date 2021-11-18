@@ -56,10 +56,7 @@ type OnlyTextContent struct {
 	Content string `json:"content"`
 }
 
-func NotifyWithWebhook(contentJson []byte) {
-	cfg := *config.Cfg
-	url := cfg.DiscordWebhookUrl
-
+func NotifyWithWebhook(contentJson []byte, url string) {
 	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(contentJson))
 	req.Header.Set("Content-Type", "application/json")
 
@@ -77,9 +74,9 @@ func NotifyWithWebhook(contentJson []byte) {
 	log.Info(string(respTxt))
 }
 
-func NotifyWIthBot(contentJson []byte) {
+func NotifyWIthBot(contentJson []byte, channelId string) {
 	cfg := *config.Cfg
-	url := fmt.Sprintf("https://discordapp.com/api/channels/%s/messages", cfg.DiscordChannelId)
+	url := fmt.Sprintf("https://discordapp.com/api/channels/%s/messages", channelId)
 
 	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(contentJson))
 	req.Header.Set("Authorization", fmt.Sprintf("Bot %s", cfg.DiscordBotToken))

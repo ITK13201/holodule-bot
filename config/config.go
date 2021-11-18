@@ -1,32 +1,25 @@
 package config
 
 import (
-	"fmt"
+	"github.com/joho/godotenv"
 	"log"
-	"os"
 	"time"
 
-	"github.com/joho/godotenv"
+	"github.com/kelseyhightower/envconfig"
 )
 
 type Config struct {
-	DiscordChannelId  string `json:"discord-channel-id"`
-	DiscordBotToken   string `json:"discord-bot-token"`
-	DiscordWebhookUrl string `json:"discord-webhook-url"`
-	DatabaseUrl       string `json:"database-url"`
+	DiscordBotToken             string `json:"discord-bot-token" envconfig:"DISCORD_BOT_TOKEN" required:"true"`
+	DatabaseUrl                 string `json:"database-url" envconfig:"DATABASE_URL" required:"true"`
+	DiscordChannelIdDaily       string `json:"discord-channel-id-daily" envconfig:"DISCORD_CHANNEL_ID_DAILY" required:"true"`
+	DiscordChannelIdComingSoon  string `json:"discord-channel-id-coming-soon" envconfig:"DISCORD_CHANNEL_ID_COMING_SOON" required:"true"`
+	DiscordWebhookUrlDaily      string `json:"discord-webhook-url-daily" envconfig:"DISCORD_WEBHOOK_URL_DAILY" required:"true"`
+	DiscordWebhookUrlComingSoon string `json:"discord-webhook-url-coming-soon" envconfig:"DISCORD_WEBHOOK_URL_COMING_SOON" required:"true"`
 }
 
 var Cfg *Config
 var JST *time.Location
 var UTC *time.Location
-
-func mustGetEnv(key string) string {
-	value := os.Getenv(key)
-	if len(value) == 0 {
-		panic(fmt.Sprintf("Error: Environment valiable with key of \"%s\" cannnot be read", key))
-	}
-	return value
-}
 
 func loadDevEnv() {
 	err := godotenv.Load("dev.env")
@@ -35,15 +28,18 @@ func loadDevEnv() {
 	}
 }
 
+func LoadConfig() (*Config, error) {
+	var cfg Config
+	err := envconfig.Process("", &cfg)
+
+	return &cfg, err
+}
+
 func init() {
 	loadDevEnv()
 
-	var cfg Config
-	cfg.DiscordChannelId = mustGetEnv("DISCORD_CHANNEL_ID")
-	cfg.DiscordBotToken = mustGetEnv("DISCORD_BOT_TOKEN")
-	cfg.DiscordWebhookUrl = mustGetEnv("DISCORD_WEBHOOK_URL")
-	cfg.DatabaseUrl = mustGetEnv("DATABASE_URL")
-	Cfg = &cfg
+	cfg, err := LoadConfig()
+	Cfg = cfg
 
 	jst, err := time.LoadLocation("Asia/Tokyo")
 	if err != nil {

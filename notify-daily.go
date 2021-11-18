@@ -9,6 +9,10 @@ import (
 	"time"
 )
 
+var (
+	cfg = *config.Cfg
+)
+
 func main() {
 	videos := video.GetVideosOfToday()
 
@@ -21,7 +25,7 @@ func main() {
 	}
 	contentJson, _ := json.Marshal(content)
 
-	discord.NotifyWithWebhook(contentJson)
+	discord.NotifyWithWebhook(contentJson, cfg.DiscordWebhookUrlDaily)
 
 	//====================
 	// notify videos
@@ -49,6 +53,6 @@ func main() {
 		}
 		contentJson, _ := json.Marshal(content)
 
-		discord.NotifyWIthBot(contentJson)
+		discord.NotifyWIthBot(contentJson, cfg.DiscordChannelIdDaily)
 	}
 }
