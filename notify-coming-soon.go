@@ -86,6 +86,10 @@ func notify() {
 		videoModels[i].Utc2jst()
 	}
 
+	if len(videoModels) == 0 {
+		return
+	}
+
 	//=================
 	// single text
 	//=================
