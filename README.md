@@ -25,9 +25,9 @@ make debug-coming-soon
 ## Run
 
 ```shell
-./bin/notify-daily
+./bin/holodule-bot daily
 # or
-./bin/notify-coming-soon
+./bin/holodule-bot coming-soon
 ```
 
 ## Migration
