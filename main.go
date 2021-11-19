@@ -11,3 +11,5 @@ var (
 	videoInteractor       = interactor.NewVideoInteractor(infrastructure.NewSqlHandler())
 	cfg                   = *config.Cfg
 )
+
+func main() {}
