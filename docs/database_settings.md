@@ -2,4 +2,4 @@
 
 ## ER diagram
 
-![ER](out/er/er.png)
+![ER](./plantuml/out/er/er.png)
