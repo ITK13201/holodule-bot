@@ -2,3 +2,4 @@
 .idea/
 deploy/
 *.log
+.vscode/

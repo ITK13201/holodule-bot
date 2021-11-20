@@ -1,0 +1,29 @@
+@startuml er
+
+!include ./config/default.inc
+
+entity videos {
+    + **id**: int [PK]
+    --
+    **distributor_id**: int [FK]
+    **url**: varchar(256)
+    **datetime**: datetime
+    **image_url**: varchar(256)
+    **notified_at**: datetime
+    **created_at**: datetime
+    **updated_at**: datetime
+}
+
+entity distributors {
+    + **id**: int [PK]
+    --
+    **name**: varchar(128)
+    **icon_url**: varchar(256)
+    **created_at**: datetime
+    **updated_at**: datetime
+}
+
+distributors -|{ videos: id:distributor_id
+
+
+@enduml
