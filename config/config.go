@@ -1,20 +1,22 @@
 package config
 
 import (
-	"github.com/joho/godotenv"
 	"log"
 	"time"
+
+	"github.com/joho/godotenv"
 
 	"github.com/kelseyhightower/envconfig"
 )
 
 type Config struct {
-	DiscordBotToken             string `json:"discord-bot-token" envconfig:"DISCORD_BOT_TOKEN" required:"true"`
 	DatabaseUrl                 string `json:"database-url" envconfig:"DATABASE_URL" required:"true"`
+	DiscordBotToken             string `json:"discord-bot-token" envconfig:"DISCORD_BOT_TOKEN" required:"true"`
 	DiscordChannelIdDaily       string `json:"discord-channel-id-daily" envconfig:"DISCORD_CHANNEL_ID_DAILY" required:"true"`
 	DiscordChannelIdComingSoon  string `json:"discord-channel-id-coming-soon" envconfig:"DISCORD_CHANNEL_ID_COMING_SOON" required:"true"`
 	DiscordWebhookUrlDaily      string `json:"discord-webhook-url-daily" envconfig:"DISCORD_WEBHOOK_URL_DAILY" required:"true"`
 	DiscordWebhookUrlComingSoon string `json:"discord-webhook-url-coming-soon" envconfig:"DISCORD_WEBHOOK_URL_COMING_SOON" required:"true"`
+	YoutubeDataAPIKey           string `json:"youtube-data-api-key" envconfig:"YOUTUBE_DATA_API_KEY" required:"true"`
 }
 
 var Cfg *Config
