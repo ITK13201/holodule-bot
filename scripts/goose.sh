@@ -7,7 +7,7 @@ cd `dirname $0`
 MIGRATION_DIR=$BASE_DIR/migrations
 DRIVER=mysql
 if [ -z "$DATABASE_URL" ]; then
-    DATABASE_URL="user:password@tcp(localhost:3306)/holodule_bot?parseTime=true"
+    DATABASE_URL="user:password@tcp(localhost:3306)/holodule_bot?parseTime=true&multiStatements=true"
 fi
 GOOSE=$BASE_DIR/bin/goose
 
