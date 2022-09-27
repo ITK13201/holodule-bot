@@ -22,22 +22,22 @@ func getHoloduleHTML() *http.Response {
 }
 
 type Distributor struct {
-	Name string
+	Name    string
 	IconUrl string
 }
 
 type Video struct {
 	Distributor Distributor
-	Url string
-	Datetime string
-	ImageUrl string
+	Url         string
+	Datetime    string
+	ImageUrl    string
 }
 
 type VideoWithDatetime struct {
 	Distributor Distributor
-	Url string
-	Datetime time.Time
-	ImageUrl string
+	Url         string
+	Datetime    time.Time
+	ImageUrl    string
 }
 
 func GetVideos() []Video {
@@ -65,8 +65,8 @@ func GetVideos() []Video {
 		wrapper.Children().Each(func(wrapperIdx int, wrapperSelection *goquery.Selection) {
 			if wrapperIdx == 0 {
 				// top
-				datetimeElem := wrapperSelection.Find("div.row.no-gutters > div.col-5.col-sm-5.col-md-5.text-left.datetime")
-				datetime:= datetimeElem.Text()
+				datetimeElem := wrapperSelection.Find("div.row.no-gutters > div.col-4.col-sm-4.col-md-4.text-left.datetime")
+				datetime := datetimeElem.Text()
 				video.Datetime = datetime
 				nameElem := wrapperSelection.Find("div.row.no-gutters > div.col.text-right.name")
 				distributor.Name = nameElem.Text()
@@ -119,10 +119,10 @@ func GetVideosWithDatetime() []VideoWithDatetime {
 
 		videoWithDatetime := VideoWithDatetime{
 			Distributor: Distributor{
-				Name: video.Distributor.Name,
+				Name:    video.Distributor.Name,
 				IconUrl: video.Distributor.IconUrl,
 			},
-			Url: video.Url,
+			Url:      video.Url,
 			Datetime: datetime,
 			ImageUrl: video.ImageUrl,
 		}
